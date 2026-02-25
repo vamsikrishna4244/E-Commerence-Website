@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Premium Lifestyle Store{% endblock %}
+
+{% block content %}
+<!-- Modern Hero Section -->
+<div class="row min-vh-75 align-items-center mb-5 animate-up">
+    <div class="col-lg-6 mb-5 mb-lg-0">
+        <span class="badge rounded-pill bg-primary-soft text-primary px-3 py-2 mb-3 fw-bold animate-fade-in"
+            style="letter-spacing: 1px;">AUTUMN COLLECTION 2026</span>
+        <h1 class="display-3 fw-bold mb-4">Elevate Your <span class="text-primary italic-style">Lifestyle</span></h1>
+        <p class="lead text-muted mb-5 pe-lg-5">Curated with excellence, our products represent the pinnacle of modern
+            design and everyday functionality. Experience the next level of premium shopping.</p>
+        <div class="d-flex gap-3">
+            <a href="{{ url_for('main.product_list') }}"
+                class="btn btn-primary btn-lg rounded-pill px-5 py-3 shadow-lg transition-all d-inline-flex align-items-center">
+                Shop Collection <i class="fas fa-arrow-right ms-3 smaller"></i>
+            </a>
+            <a href="#featured"
+                class="btn btn-outline-dark btn-lg rounded-pill px-5 py-3 border-0 bg-light transition-all">
+                Explore Items
+            </a>
+        </div>
+
+        <!-- Trust Indicators -->
+        <div class="mt-5 pt-4 d-flex align-items-center">
+            <div class="avatar-group me-3">
+                <img src="https://i.pravatar.cc/150?u=1" class="avatar shadow-sm" alt="">
+                <img src="https://i.pravatar.cc/150?u=2" class="avatar shadow-sm" alt="">
+                <img src="https://i.pravatar.cc/150?u=3" class="avatar shadow-sm" alt="">
+            </div>
+            <p class="mb-0 smaller text-muted fw-medium border-start ps-3"><span class="fw-bold text-dark">50k+</span>
+                Happy Customers Worldwide</p>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="position-relative">
+            <!-- Decorative shapes -->
+            <div class="hero-shape hero-shape-1"></div>
+            <div class="hero-shape hero-shape-2"></div>
+
+            <div class="glass-card p-3 border-0 shadow-2xl rounded-5 overflow-hidden position-relative"
+                style="z-index: 2;">
+                <img src="{{ products[0].image_url if products else 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80' }}"
+                    class="img-fluid rounded-5 w-100 object-fit-cover shadow-sm transition-all" alt="Featured Hero"
+                    style="height: 500px;">
+
+                <!-- Floating Info Box -->
+                <div class="position-absolute bottom-0 start-0 m-4 p-4 glass-card bg-white-50 border-0 shadow-lg rounded-4 animate-up"
+                    style="max-width: 250px;">
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="badge bg-success rounded-circle p-1 me-2"><i
+                                class="fas fa-check smaller text-white"></i></span>
+                        <span class="smaller fw-bold">In Stock Now</span>
+                    </div>
+                    <h6 class="fw-bold mb-0">Premium Audio Collection</h6>
+                    <p class="smaller text-muted mb-0">From $299.00</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Featured Section -->
+<section id="featured" class="py-5 mt-5">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-end mb-5 gap-3">
+        <div>
+            <span class="text-primary fw-bold text-uppercase smaller mb-2 d-block" style="letter-spacing: 2px;">Trending
+                Now</span>
+            <h2 class="display-6 fw-bold mb-0">Featured Collections</h2>
+        </div>
+        <a href="{{ url_for('main.product_list') }}"
+            class="btn btn-link text-decoration-none fw-bold text-dark p-0 border-bottom border-2 border-primary">
+            Browse Everything <i class="fas fa-arrow-right ms-2 smaller"></i>
+        </a>
+    </div>
+
+    <div class="row g-4">
+        {% if products %}
+        {% for product in products %}
+        <div class="col-6 col-md-4 col-lg-3 animate-up" style="animation-delay: {{ loop.index0 * 0.1 }}s;">
+            <div class="product-card glass-card h-100 border-0 p-3 shadow-none hover-shadow">
+                <div class="product-image-wrapper rounded-4 mb-3" style="height: 220px;">
+                    <img src="{{ product.image_url or 'https://via.placeholder.com/400x400?text=Product' }}"
+                        class="product-image" alt="{{ product.name }}">
+                </div>
+                <div class="px-2">
+                    <p class="text-muted smaller fw-bold text-uppercase mb-1" style="letter-spacing: 1px;">{{
+                        product.category }}</p>
+                    <h6 class="fw-bold mb-3 text-truncate">{{ product.name }}</h6>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="fw-bold text-primary">${{ "%.2f"|format(product.price) }}</span>
+                        <form class="add-to-cart-form">
+                            <input type="hidden" name="product_id" value="{{ product.id }}">
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit"
+                                class="btn btn-primary rounded-pill d-flex align-items-center justify-content-center p-0"
+                                style="width: 32px; height: 32px;">
+                                <i class="fas fa-plus smaller"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <a href="{{ url_for('main.product_detail', product_id=product.id) }}" class="stretched-link"></a>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="col-12 text-center py-5">
+            <p class="text-muted italic-style">New items arriving soon. Please check back later.</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Features Grid -->
+<div class="row g-4 py-5 my-5 border-top">
+    <div class="col-md-4">
+        <div
+            class="p-5 glass-card border-0 h-100 text-center transition-all bg-light-subtle shadow-none hover-shadow-sm">
+            <div class="bg-primary shadow-lg rounded-circle d-inline-flex p-3 mb-4 text-white">
+                <i class="fas fa-truck-magic fs-4"></i>
+            </div>
+            <h5 class="fw-bold mb-3">Priority Delivery</h5>
+            <p class="text-muted smaller mb-0 px-md-3">Complimentary express shipping on all orders over $99 worldwide.
+            </p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div
+            class="p-5 glass-card border-0 h-100 text-center transition-all bg-light-subtle shadow-none hover-shadow-sm">
+            <div class="bg-primary shadow-lg rounded-circle d-inline-flex p-3 mb-4 text-white">
+                <i class="fas fa-shield-check fs-4"></i>
+            </div>
+            <h5 class="fw-bold mb-3">Guaranteed Safety</h5>
+            <p class="text-muted smaller mb-0 px-md-3">Your security is our priority. 100% encrypted payment protocols.
+            </p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div
+            class="p-5 glass-card border-0 h-100 text-center transition-all bg-light-subtle shadow-none hover-shadow-sm">
+            <div class="bg-primary shadow-lg rounded-circle d-inline-flex p-3 mb-4 text-white">
+                <i class="fas fa-sparkles fs-4"></i>
+            </div>
+            <h5 class="fw-bold mb-3">30-Day Bliss</h5>
+            <p class="text-muted smaller mb-0 px-md-3">Not perfectly satisfied? Return within 30 days for a full refund.
+            </p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .min-vh-75 {
+        min-height: 75vh;
+    }
+
+    .italic-style {
+        font-style: italic;
+    }
+
+    .shadow-2xl {
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+
+    .bg-white-50 {
+        background-color: rgba(255, 255, 255, 0.5) !important;
+    }
+
+    .avatar-group {
+        display: flex;
+        align-items: center;
+    }
+
+    .avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 2px solid white;
+        margin-left: -10px;
+    }
+
+    .avatar:first-child {
+        margin-left: 0;
+    }
+
+    .hero-shape {
+        position: absolute;
+        z-index: 1;
+        filter: blur(80px);
+        opacity: 0.4;
+    }
+
+    .hero-shape-1 {
+        top: 10%;
+        right: 10%;
+        width: 300px;
+        height: 300px;
+        background: var(--primary-color);
+        border-radius: 50%;
+    }
+
+    .hero-shape-2 {
+        bottom: 20%;
+        left: 10%;
+        width: 200px;
+        height: 200px;
+        background: var(--accent-color, #ff6b6b);
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    }
+
+    .hover-shadow:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    .bg-success-soft {
+        background-color: rgba(40, 167, 69, 0.1) !important;
+    }
+</style>
+{% endblock %}

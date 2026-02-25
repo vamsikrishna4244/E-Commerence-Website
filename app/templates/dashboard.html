@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}My Dashboard{% endblock %}
+
+{% block content %}
+<div class="row g-4 mb-5">
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+            <div class="d-flex align-items-center mb-3">
+                <div class="btn-primary rounded-circle d-flex align-items-center justify-content-center me-3"
+                    style="width: 50px; height: 50px;">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h5 class="fw-bold mb-0">Profile Info</h5>
+            </div>
+            <p class="mb-1 fw-bold">{{ user.username }}</p>
+            <p class="text-muted small mb-0">{{ user.email }}</p>
+            <hr class="my-4">
+            <a href="{{ url_for('auth.edit_profile') }}" class="btn btn-outline-primary btn-sm rounded-pill w-100">Edit
+                Profile</a>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <h4 class="fw-bold mb-4">My Orders</h4>
+        {% if orders %}
+        {% for order in orders %}
+        <div class="card border-0 shadow-sm rounded-4 mb-3 overflow-hidden">
+            <div class="card-header bg-white border-light py-3 d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="text-muted small">Order ID:</span> <span class="fw-bold small">{{ order.id }}</span>
+                    <span class="mx-2 text-muted">|</span>
+                    <span class="text-muted small">{{ order.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+                </div>
+                <span
+                    class="badge {{ 'bg-success-subtle text-success' if order.status == 'Delivered' else 'bg-primary-subtle text-primary' }} rounded-pill px-3">{{
+                    order.status }}</span>
+            </div>
+            <div class="card-body p-4">
+                <div class="row g-3">
+                    <div class="col-8">
+                        <h6 class="fw-bold small mb-3">Items</h6>
+                        <ul class="list-unstyled mb-0">
+                            {% for item in order['items'] %}
+                            <li class="small text-muted mb-1">{{ item.quantity }}x {{ item.name }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="col-4 text-end">
+                        <h6 class="fw-bold small mb-1">Total Amount</h6>
+                        <p class="h5 fw-bold text-primary mb-0">${{ "%.2f"|format(order.total) }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="card border-0 shadow-sm rounded-4 p-5 text-center">
+            <div class="display-4 text-muted mb-3"><i class="fas fa-box-open"></i></div>
+            <h5>No orders yet</h5>
+            <p class="text-muted">You haven't placed any orders yet. Start shopping to see them here.</p>
+            <div class="d-flex justify-content-center">
+                <a href="{{ url_for('main.product_list') }}" class="btn btn-primary rounded-pill">Shop Now</a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

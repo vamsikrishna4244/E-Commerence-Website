@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block title %}Shop All Products{% endblock %}
+
+{% block content %}
+<div class="container py-4 animate-up">
+    <div class="row g-4">
+        <!-- Sidebar Filters -->
+        <div class="col-lg-3">
+            <div class="glass-card p-4 shadow-sm border-0 sticky-top" style="top: 100px; z-index: 10;">
+                <h5 class="fw-bold mb-4 px-2">Refine Search</h5>
+
+                <div class="mb-5">
+                    <label class="form-label small fw-bold text-uppercase text-muted px-2 mb-3">Categories</label>
+                    <div class="nav flex-column nav-pills">
+                        <a href="{{ url_for('main.product_list') }}"
+                            class="nav-link rounded-pill mb-2 py-2 px-3 {% if not request.args.get('category') %}active shadow-sm{% else %}text-dark hover-bg-light{% endif %}">
+                            All Collections
+                        </a>
+                        <a href="{{ url_for('main.product_list', category='Electronics') }}"
+                            class="nav-link rounded-pill mb-2 py-2 px-3 {% if request.args.get('category') == 'Electronics' %}active shadow-sm{% else %}text-dark hover-bg-light{% endif %}">
+                            Electronics
+                        </a>
+                        <a href="{{ url_for('main.product_list', category='Fashion') }}"
+                            class="nav-link rounded-pill mb-2 py-2 px-3 {% if request.args.get('category') == 'Fashion' %}active shadow-sm{% else %}text-dark hover-bg-light{% endif %}">
+                            Fashion
+                        </a>
+                        <a href="{{ url_for('main.product_list', category='Home Decor') }}"
+                            class="nav-link rounded-pill mb-2 py-2 px-3 {% if request.args.get('category') == 'Home Decor' %}active shadow-sm{% else %}text-dark hover-bg-light{% endif %}">
+                            Home Decor
+                        </a>
+                    </div>
+                </div>
+
+                <div class="p-3 bg-primary-soft rounded-4">
+                    <p class="small fw-bold text-primary mb-1">Flash Sale!</p>
+                    <p class="smaller text-muted mb-3">Get 20% off on all Fashion items this weekend.</p>
+                    <button class="btn btn-primary btn-sm rounded-pill px-3 w-100">View Sale</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="col-lg-9">
+            <!-- Header/Breadcrumbs Area -->
+            <div class="d-flex justify-content-between align-items-end mb-5">
+                <div>
+                    <nav aria-label="breadcrumb" class="mb-2">
+                        <ol class="breadcrumb smaller text-muted mb-0">
+                            <li class="breadcrumb-item"><a href="{{ url_for('main.home') }}"
+                                    class="text-decoration-none">Home</a></li>
+                            <li class="breadcrumb-item active">Shop</li>
+                        </ol>
+                    </nav>
+                    <h2 class="fw-bold mb-0">
+                        {% if request.args.get('category') %}
+                        {{ request.args.get('category') }}
+                        {% elif request.args.get('q') %}
+                        Search: "{{ request.args.get('q') }}"
+                        {% else %}
+                        All Collections
+                        {% endif %}
+                    </h2>
+                </div>
+                <div class="text-muted smaller fw-medium bg-white px-3 py-2 rounded-pill shadow-sm border">
+                    {{ products | length }} Products Found
+                </div>
+            </div>
+
+            <!-- Grid -->
+            <div class="row g-4 overflow-hidden">
+                {% if products %}
+                {% for product in products %}
+                <div class="col-md-6 col-xl-4 animate-up" style="animation-delay: {{ loop.index0 * 0.05 }}s;">
+                    <div class="product-card glass-card h-100 border-0 p-3">
+                        <div class="product-image-wrapper rounded-4 mb-3">
+                            <img src="{{ product.image_url or 'https://via.placeholder.com/400x400?text=Product' }}"
+                                class="product-image" alt="{{ product.name }}">
+                            <div class="product-actions">
+                                <button class="btn btn-white btn-sm rounded-circle shadow-sm me-2 add-to-wishlist">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <a href="{{ url_for('main.product_detail', product_id=product.id) }}"
+                                    class="btn btn-white btn-sm rounded-pill shadow-sm px-3">
+                                    Quick View
+                                </a>
+                            </div>
+                        </div>
+                        <div class="px-2">
+                            <p class="text-muted smaller fw-bold text-uppercase mb-1" style="letter-spacing: 1px;">{{
+                                product.category }}</p>
+                            <h6 class="fw-bold mb-3 text-truncate">{{ product.name }}</h6>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-primary fs-5">${{ "%.2f"|format(product.price) }}</span>
+                                <form class="add-to-cart-form">
+                                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                                    <input type="hidden" name="quantity" value="1">
+                                    <button type="submit"
+                                        class="btn btn-primary rounded-pill d-flex align-items-center justify-content-center p-0"
+                                        style="width: 38px; height: 38px;">
+                                        <i class="fas fa-shopping-cart smaller"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        <a href="{{ url_for('main.product_detail', product_id=product.id) }}"
+                            class="stretched-link"></a>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="col-12 py-5 text-center">
+                    <div class="py-5 glass-card shadow-none bg-light-subtle rounded-5 border-dashed">
+                        <i class="fas fa-search-minus fa-3x text-light mb-3"></i>
+                        <h4 class="fw-bold text-muted">No items match your criteria</h4>
+                        <p class="text-muted">Try removing filters or using a different search term.</p>
+                        <a href="{{ url_for('main.product_list') }}"
+                            class="btn btn-primary rounded-pill mt-3 px-5 py-3 shadow-sm">Show Everything</a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-bg-light:hover {
+        background-color: rgba(0, 0, 0, 0.03);
+    }
+
+    .product-actions {
+        position: absolute;
+        bottom: 15px;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 2;
+    }
+
+    .product-card:hover .product-actions {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .btn-white {
+        background: white;
+        color: var(--primary-color);
+        border: none;
+    }
+
+    .btn-white:hover {
+        background: var(--primary-color);
+        color: white;
+    }
+
+    .border-dashed {
+        border: 2px dashed rgba(0, 0, 0, 0.05) !important;
+    }
+</style>
+{% endblock %}

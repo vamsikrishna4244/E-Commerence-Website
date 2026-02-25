@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<div class="container py-5 d-flex align-items-center justify-content-center min-vh-100 animate-up">
+    <div class="col-md-8 col-lg-5">
+        <div class="glass-card p-4 p-md-5 border-0 shadow-lg text-center position-relative overflow-hidden">
+            <div class="mb-5 position-relative">
+                <div class="bg-primary-soft rounded-circle d-inline-flex p-3 mb-3">
+                    <i class="fas fa-user-edit text-primary fs-3"></i>
+                </div>
+                <h2 class="fw-bold mb-1">Edit Profile</h2>
+                <p class="text-muted smaller">Update your account information.</p>
+            </div>
+
+            <form method="POST" action="" class="text-start">
+                {{ form.hidden_tag() }}
+
+                <div class="mb-4">
+                    <label class="form-label small fw-bold text-uppercase text-muted px-2 mb-2">{{
+                        form.username.label.text }}</label>
+                    {% if form.username.errors %}
+                    {{ form.username(class="form-control is-invalid rounded-pill border-0 bg-light px-4 py-3
+                    shadow-none") }}
+                    <div class="invalid-feedback ps-3">
+                        {% for error in form.username.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.username(class="form-control rounded-pill border-0 bg-light px-4 py-3 shadow-none") }}
+                    {% endif %}
+                </div>
+
+                <div class="mb-5">
+                    <label class="form-label small fw-bold text-uppercase text-muted px-2 mb-2">{{ form.email.label.text
+                        }}</label>
+                    {% if form.email.errors %}
+                    {{ form.email(class="form-control is-invalid rounded-pill border-0 bg-light px-4 py-3 shadow-none")
+                    }}
+                    <div class="invalid-feedback ps-3">
+                        {% for error in form.email.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.email(class="form-control rounded-pill border-0 bg-light px-4 py-3 shadow-none") }}
+                    {% endif %}
+                </div>
+
+                <div class="d-grid gap-2">
+                    {{ form.submit(class="btn btn-primary btn-lg rounded-pill py-3 shadow-sm transition-all") }}
+                </div>
+            </form>
+
+            <div class="text-center mt-4">
+                <a href="{{ url_for('main.dashboard') }}"
+                    class="text-muted smaller text-decoration-none border-bottom">Cancel and Return</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

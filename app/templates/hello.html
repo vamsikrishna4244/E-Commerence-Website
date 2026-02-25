@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="display-4 text-primary mb-4">Welcome to HTML Technology!</h1>
+            <p class="lead text-muted">This page was created using <code>.html</code> templates in Flask.</p>
+            <div class="card shadow-lg border-0 rounded-lg mt-4">
+                <div class="card-body p-5">
+                    <h2 class="h4 mb-3">How this works:</h2>
+                    <ul class="text-start list-group list-group-flush mb-4">
+                        <li class="list-group-item"><strong>Template:</strong> This file is
+                            <code>app/templates/hello.html</code>.</li>
+                        <li class="list-group-item"><strong>Backend Logic:</strong> A Python route in
+                            <code>app/routes/main.py</code> tells Flask to render this file.</li>
+                        <li class="list-group-item"><strong>Modern UI:</strong> We use Bootstrap 5 classes and custom
+                            CSS for a premium look.</li>
+                    </ul>
+                    <a href="{{ url_for('main.home') }}" class="btn btn-primary btn-lg px-5">Back to Home</a>
+                </div>
+            </div>
+
+            <div class="mt-5">
+                <h3 class="h5 text-secondary">Aesthetic Demonstration</h3>
+                <div class="d-flex justify-content-center gap-3 mt-3">
+                    <div class="p-4 bg-gradient rounded-circle shadow-sm"
+                        style="background: linear-gradient(45deg, #007bff, #6610f2); width: 60px; height: 60px;"></div>
+                    <div class="p-4 bg-gradient rounded-circle shadow-sm"
+                        style="background: linear-gradient(45deg, #28a745, #20c997); width: 60px; height: 60px;"></div>
+                    <div class="p-4 bg-gradient rounded-circle shadow-sm"
+                        style="background: linear-gradient(45deg, #ffc107, #fd7e14); width: 60px; height: 60px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-gradient {
+        transition: transform 0.3s ease;
+    }
+
+    .bg-gradient:hover {
+        transform: scale(1.1);
+    }
+
+    body {
+        background-color: #f8f9fa;
+    }
+</style>
+{% endblock %}

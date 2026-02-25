@@ -1,0 +1,17 @@
+{% extends "email/base_email.html" %}
+
+{% block content %}
+<h2>Welcome to the Inner Circle</h2>
+<p>Hi <strong>{{ user.username }}</strong>,</p>
+<p>We are thrilled to have you join our community of premium lifestyle enthusiasts. At EShop Pro, we believe that
+    quality should never be compromised, and we're dedicated to bringing you the world's most exquisite products.</p>
+
+<p>Your account has been successfully created. You're now ready to experience the next level of premium shopping.</p>
+
+<div class="button-container">
+    <a href="{{ url_for('main.home', _external=True) }}" class="button">Start Exploring</a>
+</div>
+
+<p>If you have any questions, our concierge team is always here to help.</p>
+<p>Stay Exquisite,<br><strong>The EShop Pro Team</strong></p>
+{% endblock %}

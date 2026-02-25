@@ -1,0 +1,36 @@
+{% extends "email/base_email.html" %}
+
+{% block content %}
+<h2>Order Confirmed</h2>
+<p>Hi <strong>{{ order.shipping_info.name }}</strong>,</p>
+<p>Thank you for choosing EShop Pro. We've received your order and our team is already preparing it for priority
+    delivery.</p>
+
+<div style="background-color: #f8f9fa; border-radius: 8px; padding: 20px; margin: 25px 0; border: 1px solid #eee;">
+    <h3 style="margin-top: 0; font-size: 16px; border-bottom: 1px solid #eee; padding-bottom: 10px; color: #1a1a1a;">
+        Order Summary</h3>
+    <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+            <td style="padding: 8px 0; color: #6c757d;">Amount Paid</td>
+            <td style="padding: 8px 0; text-align: right; font-weight: 600; color: #009ffd;">${{
+                "%.2f"|format(order.total) }}</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px 0; color: #6c757d;">Shipping To</td>
+            <td style="padding: 8px 0; text-align: right; font-size: 13px;">
+                {{ order.shipping_info.address }}<br>
+                {{ order.shipping_info.city }}, {{ order.shipping_info.zip }}
+            </td>
+        </tr>
+    </table>
+</div>
+
+<p>You can track your order status and view your full purchase history anytime in your dashboard.</p>
+
+<div class="button-container">
+    <a href="{{ url_for('main.dashboard', _external=True) }}" class="button">View Dashboard</a>
+</div>
+
+<p>Thank you for your trust in our expertise.</p>
+<p>Best regards,<br><strong>The EShop Pro Team</strong></p>
+{% endblock %}

@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Products{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4 animate-up">
+    <div class="row g-4">
+        <!-- Sidebar Navigation -->
+        <div class="col-lg-3">
+            <div class="glass-card p-4 h-100 shadow-sm border-0">
+                <h5 class="fw-bold mb-4 px-2">Management</h5>
+                <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a href="{{ url_for('admin.dashboard') }}" class="nav-link rounded-pill mb-2 py-3 px-4 text-dark">
+                        <i class="fas fa-th-large me-3 text-primary"></i>Dashboard
+                    </a>
+                    <a href="{{ url_for('admin.manage_products') }}"
+                        class="nav-link active rounded-pill mb-2 py-3 px-4 shadow-sm">
+                        <i class="fas fa-box-open me-3 text-white"></i>Products
+                    </a>
+                    <a href="#" class="nav-link rounded-pill mb-2 py-3 px-4 text-dark opacity-50">
+                        <i class="fas fa-users-cog me-3 text-success"></i>Users
+                    </a>
+                    <a href="#" class="nav-link rounded-pill mb-2 py-3 px-4 text-dark opacity-50">
+                        <i class="fas fa-chart-line me-3 text-accent"></i>Analytics
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="col-lg-9">
+            <!-- Header Area -->
+            <div class="d-flex justify-content-between align-items-center mb-5">
+                <div>
+                    <h2 class="fw-bold mb-1">Product Inventory</h2>
+                    <p class="text-muted mb-0">Manage your catalog, prices, and stock levels.</p>
+                </div>
+                <div>
+                    <a href="{{ url_for('admin.new_product') }}" class="btn btn-primary rounded-pill px-4 py-2">
+                        <i class="fas fa-plus me-2"></i>Add New Product
+                    </a>
+                </div>
+            </div>
+
+            <!-- Product Table -->
+            <div class="glass-card border-0 overflow-hidden shadow-sm">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light-subtle">
+                            <tr>
+                                <th class="ps-4 py-4 text-muted small text-uppercase fw-bold">ID</th>
+                                <th class="py-4 text-muted small text-uppercase fw-bold">Product</th>
+                                <th class="py-4 text-muted small text-uppercase fw-bold">Category</th>
+                                <th class="py-4 text-muted small text-uppercase fw-bold">Price</th>
+                                <th class="py-4 text-muted small text-uppercase fw-bold text-end pe-4">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if products %}
+                            {% for product in products %}
+                            <tr class="transition-all">
+                                <td class="ps-4">
+                                    <span class="bg-light rounded px-2 py-1 small fw-bold text-muted">{{
+                                        product.id[:8].upper() }}</span>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="product-thumb rounded-3 me-3 overflow-hidden shadow-sm"
+                                            style="width: 48px; height: 48px;">
+                                            <img src="{{ product.image_url or 'https://via.placeholder.com/100' }}"
+                                                class="w-100 h-100 object-fit-cover" alt="">
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold mb-0">{{ product.name }}</h6>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge rounded-pill bg-light text-dark border py-2 px-3 fw-medium">
+                                        {{ product.category }}
+                                    </span>
+                                </td>
+                                <td><span class="fw-bold text-primary">${{ "%.2f"|format(product.price) }}</span></td>
+                                <td class="pe-4 text-end">
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <a href="{{ url_for('admin.edit_product', product_id=product.id) }}"
+                                            class="btn btn-light btn-sm rounded-circle shadow-sm"
+                                            style="width: 36px; height: 36px;">
+                                            <i class="fas fa-edit text-primary"></i>
+                                        </a>
+                                        <form action="{{ url_for('admin.delete_product', product_id=product.id) }}"
+                                            method="POST" class="d-inline"
+                                            onsubmit="return confirm('Delete this product?')">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                            <button type="submit" class="btn btn-light btn-sm rounded-circle shadow-sm"
+                                                style="width: 36px; height: 36px;">
+                                                <i class="fas fa-trash-alt text-danger"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center py-5">
+                                    <div class="py-5">
+                                        <i class="fas fa-box-open fa-4x text-light mb-3"></i>
+                                        <h4 class="fw-bold text-muted">Inventory Empty</h4>
+                                        <p class="text-muted">Start building your catalog by adding your first product.
+                                        </p>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .product-thumb img {
+        transition: transform 0.3s ease;
+    }
+
+    tr:hover .product-thumb img {
+        transform: scale(1.15);
+    }
+</style>
+{% endblock %}

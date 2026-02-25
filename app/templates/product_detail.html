@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="container py-5 animate-up">
+    <!-- Breadcrumbs -->
+    <nav aria-label="breadcrumb" class="mb-5">
+        <ol class="breadcrumb smaller text-muted">
+            <li class="breadcrumb-item"><a href="{{ url_for('main.home') }}" class="text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('main.product_list') }}"
+                    class="text-decoration-none">Shop</a></li>
+            <li class="breadcrumb-item active">{{ product.category }}</li>
+        </ol>
+    </nav>
+
+    <div class="row g-5">
+        <!-- Product Image Showcase -->
+        <div class="col-lg-7">
+            <div class="glass-card p-2 border-0 overflow-hidden shadow-lg position-relative">
+                <div class="rounded-5 overflow-hidden bg-light-subtle">
+                    <img src="{{ product.image_url or 'https://via.placeholder.com/800x800?text=' + product.name }}"
+                        class="img-fluid w-100 object-fit-cover main-product-image" alt="{{ product.name }}"
+                        style="max-height: 600px;">
+                </div>
+                <!-- Promotional Badge -->
+                <div class="position-absolute top-0 start-0 m-4">
+                    <span class="badge rounded-pill bg-primary px-3 py-2 shadow-sm animate-fade-in">Verified
+                        Quality</span>
+                </div>
+            </div>
+
+            <!-- Thumbnail Gallery (Simulated) -->
+            <div class="d-flex gap-3 mt-4">
+                <div class="glass-card p-1 border-0 shadow-sm rounded-4 border-primary border-2"
+                    style="width: 80px; height: 80px; cursor: pointer;">
+                    <img src="{{ product.image_url or 'https://via.placeholder.com/100' }}"
+                        class="w-100 h-100 rounded-4 object-fit-cover shadow-sm" alt="">
+                </div>
+                <div class="glass-card p-1 border-0 shadow-sm rounded-4 opacity-50"
+                    style="width: 80px; height: 80px; cursor: pointer;">
+                    <img src="{{ product.image_url or 'https://via.placeholder.com/100' }}"
+                        class="w-100 h-100 rounded-4 object-fit-cover shadow-sm" alt="" style="filter: grayscale(1);">
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Purchase Information -->
+        <div class="col-lg-5">
+            <div class="ps-lg-4">
+                <div class="mb-4">
+                    <span class="text-primary fw-bold text-uppercase smaller mb-2 d-block"
+                        style="letter-spacing: 2px;">{{ product.category }}</span>
+                    <h1 class="display-5 fw-bold mb-3">{{ product.name }}</h1>
+
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="fs-2 fw-bold text-primary me-3">${{ "%.2f"|format(product.price) }}</div>
+                        <div class="text-muted smaller"><del>$99.00</del></div>
+                        <span class="ms-3 badge bg-success-soft rounded-pill px-3 py-2">In Stock</span>
+                    </div>
+
+                    <div class="d-flex gap-2 mb-4">
+                        {% for i in range(5) %}
+                        <i class="fas fa-star text-warning small"></i>
+                        {% endfor %}
+                        <span class="text-muted smaller ms-2">(124 Global Reviews)</span>
+                    </div>
+                </div>
+
+                <div class="glass-card p-4 border-0 shadow-sm mb-5 bg-white-50">
+                    <p class="text-muted mb-0 lead smaller">{{ product.description }}</p>
+                </div>
+
+                <form class="add-to-cart-form">
+                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                    <div class="row g-3 mb-5">
+                        <div class="col-4">
+                            <label class="form-label smaller fw-bold text-muted">QTY</label>
+                            <input type="number" name="quantity"
+                                class="form-control rounded-pill border-0 bg-light px-4 py-3 shadow-none text-center"
+                                value="1" min="1">
+                        </div>
+                        <div class="col-8 d-flex align-items-end">
+                            <button type="submit"
+                                class="btn btn-primary btn-lg rounded-pill w-100 py-3 d-flex align-items-center justify-content-center">
+                                <i class="fas fa-shopping-bag me-2"></i>Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Value Props -->
+                <div class="row g-4 pt-4 border-top">
+                    <div class="col-6">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-shipping-fast text-primary me-3 fs-4"></i>
+                            <div>
+                                <p class="mb-0 fw-bold smaller">Express Shipping</p>
+                                <p class="mb-0 smaller text-muted">2-3 Business Days</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-shield-check text-primary me-3 fs-4"></i>
+                            <div>
+                                <p class="mb-0 fw-bold smaller">Secure Payments</p>
+                                <p class="mb-0 smaller text-muted">Fully SSL Encrypted</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .main-product-image {
+        transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .main-product-image:hover {
+        transform: scale(1.05);
+    }
+
+    .bg-white-50 {
+        background-color: rgba(255, 255, 255, 0.5) !important;
+    }
+</style>
+{% endblock %}

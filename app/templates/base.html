@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EShop Pro - {% block title %}{% endblock %}</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"
+        rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #2a2a72 0%, #009ffd 100%);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --font-main: 'Outfit', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: #fdfdfd;
+            color: #1a1a1a;
+        }
+
+        .navbar {
+            backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.9) !important;
+            padding: 1rem 0;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: #444 !important;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem !important;
+        }
+
+        .nav-link:hover {
+            color: #009ffd !important;
+            transform: translateY(-1px);
+        }
+
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            letter-spacing: -0.5px;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            border: none;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-gradient);
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 159, 253, 0.3);
+        }
+
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+        }
+    </style>
+    {% block head %}{% endblock %}
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+    <!-- Premium Navbar -->
+    <nav class="navbar navbar-expand-lg border-bottom border-light sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-dark d-flex align-items-center" href="{{ url_for('main.home') }}">
+                <div class="bg-primary-soft rounded-3 p-2 me-2 d-inline-flex">
+                    <i class="fas fa-crown text-primary fs-5"></i>
+                </div>
+                EShop<span class="text-primary italic-style">Pro</span>
+            </a>
+
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link px-3" href="{{ url_for('main.home') }}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link px-3"
+                            href="{{ url_for('main.product_list') }}">Collections</a></li>
+                    <li class="nav-item"><a class="nav-link px-3"
+                            href="{{ url_for('main.home') }}#featured">Trending</a></li>
+                </ul>
+
+                <div class="d-flex align-items-center gap-3">
+                    <form class="d-none d-xl-flex position-relative" action="{{ url_for('main.product_list') }}"
+                        method="GET">
+                        <input class="form-control form-control-sm border-0 bg-light rounded-pill px-4 py-2"
+                            style="width: 220px;" type="search" name="q" placeholder="Global search..."
+                            aria-label="Search">
+                        <i
+                            class="fas fa-search position-absolute end-0 top-50 translate-middle-y me-3 smaller text-muted"></i>
+                    </form>
+
+                    <a href="{{ url_for('main.view_cart') }}"
+                        class="btn btn-light rounded-circle shadow-sm position-relative p-0 d-flex align-items-center justify-content-center"
+                        style="width: 42px; height: 42px;">
+                        <i class="fas fa-shopping-bag text-dark smaller"></i>
+                        <span id="cart-count"
+                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary border border-2 border-white">
+                            {{ cart_count }}
+                        </span>
+                    </a>
+
+                    {% if current_user.is_authenticated %}
+                    <div class="dropdown">
+                        <button class="btn btn-light rounded-pill px-3 py-2 d-flex align-items-center border shadow-sm"
+                            type="button" data-bs-toggle="dropdown">
+                            <img src="https://ui-avatars.com/api/?name={{ current_user.username }}&background=009ffd&color=fff"
+                                class="rounded-circle me-2" style="width: 24px;">
+                            <span class="smaller fw-bold">{{ current_user.username }}</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end glass-card border-0 shadow-lg mt-3 p-2 animate-up">
+                            <li><a class="dropdown-item rounded-3 mb-1" href="{{ url_for('main.dashboard') }}"><i
+                                        class="fas fa-th-large me-2 smaller"></i>Dashboard</a></li>
+                            {% if current_user.is_admin %}
+                            <li><a class="dropdown-item rounded-3 mb-1 text-primary fw-bold"
+                                    href="{{ url_for('admin.dashboard') }}"><i
+                                        class="fas fa-shield-halved me-2 smaller"></i>Admin Panel</a></li>
+                            {% endif %}
+                            <li>
+                                <hr class="dropdown-divider opacity-10">
+                            </li>
+                            <li><a class="dropdown-item rounded-3 text-danger" href="{{ url_for('auth.logout') }}"><i
+                                        class="fas fa-power-off me-2 smaller"></i>Logout</a></li>
+                        </ul>
+                    </div>
+                    {% else %}
+                    <div class="d-flex gap-2">
+                        <a href="{{ url_for('auth.login') }}"
+                            class="btn btn-link text-dark text-decoration-none smaller fw-bold px-3 py-2">Sign In</a>
+                        <a href="{{ url_for('auth.register') }}"
+                            class="btn btn-primary btn-sm rounded-pill px-4 py-2 shadow-sm">Create Account</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content Area -->
+    <main class="flex-grow-1">
+        <div class="container py-2 mt-2">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert glass-card border-0 border-start border-4 border-{{ 'primary' if category == 'success' else 'danger' }} alert-dismissible fade show shadow-sm mb-4 animate-up"
+                role="alert">
+                <div class="d-flex align-items-center">
+                    <i
+                        class="fas fa-{{ 'check-circle' if category == 'success' else 'exclamation-circle' }} me-3 text-{{ 'primary' if category == 'success' else 'danger' }}"></i>
+                    <span class="smaller fw-medium">{{ message }}</span>
+                </div>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- Premium Footer -->
+    <footer class="bg-white border-top py-5 mt-5">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-5">
+                    <a class="footer-logo text-dark fw-bold text-decoration-none d-block mb-4" href="#">EShop<span
+                            class="text-primary italic-style">Pro</span></a>
+                    <p class="text-muted smaller pe-lg-5 mb-4">Dedicated to bringing you the worlds most exquisite
+                        products through a seamless, premium digital experience. We believe quality should never be
+                        compromised.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="btn btn-light rounded-circle shadow-sm"
+                            style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;"><i
+                                class="fab fa-instagram text-muted fs-5"></i></a>
+                        <a href="#" class="btn btn-light rounded-circle shadow-sm"
+                            style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;"><i
+                                class="fab fa-twitter text-muted fs-5"></i></a>
+                        <a href="#" class="btn btn-light rounded-circle shadow-sm"
+                            style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;"><i
+                                class="fab fa-linkedin-in text-muted fs-5"></i></a>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-2">
+                    <h6 class="fw-bold mb-4 smaller text-uppercase" style="letter-spacing: 1px;">Company</h6>
+                    <ul class="list-unstyled smaller">
+                        <li class="mb-3"><a href="#"
+                                class="text-muted text-decoration-none hover-primary transition-all">About Our Story</a>
+                        </li>
+                        <li class="mb-3"><a href="#"
+                                class="text-muted text-decoration-none hover-primary transition-all">Careers</a></li>
+                        <li class="mb-3"><a href="#"
+                                class="text-muted text-decoration-none hover-primary transition-all">Sustainability</a>
+                        </li>
+                        <li class="mb-3"><a href="#"
+                                class="text-muted text-decoration-none hover-primary transition-all">Store Locator</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-6 col-lg-2">
+                    <h6 class="fw-bold mb-4 smaller text-uppercase" style="letter-spacing: 1px;">Support</h6>
+                    <ul class="list-unstyled smaller">
+                        <li class="mb-3"><a href="#"
+                                class="text-muted text-decoration-none hover-primary transition-all">Shipping Policy</a>
+                        </li>
+                        <li class="mb-3"><a href="#"
+                                class="text-muted text-decoration-none hover-primary transition-all">Returns &
+                                Exchanges</a></li>
+                        <li class="mb-3"><a href="#"
+                                class="text-muted text-decoration-none hover-primary transition-all">Order Tracking</a>
+                        </li>
+                        <li class="mb-3"><a href="#"
+                                class="text-muted text-decoration-none hover-primary transition-all">Privacy Policy</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h6 class="fw-bold mb-4 smaller text-uppercase" style="letter-spacing: 1px;">Join The Inner Circle
+                    </h6>
+                    <p class="text-muted smaller mb-4">Be the first to receive exclusive invitations to private sales
+                        and collections.</p>
+                    <div class="input-group mb-2">
+                        <input type="email" class="form-control border-0 bg-light rounded-pill-start px-4 smaller"
+                            placeholder="Your email address">
+                        <button class="btn btn-primary rounded-pill-end px-4" type="button"><i
+                                class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-5 pt-4 border-top">
+                <div class="row align-items-center">
+                    <div class="col-md-6 text-center text-md-start">
+                        <p class="mb-0 smaller text-muted">&copy; 2026 EShop Pro Intelligence. Crafted with elegance for
+                            world-class shopping.</p>
+                    </div>
+                    <div class="col-md-6 text-center text-md-end mt-3 mt-md-0">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" style="height: 12px;"
+                            class="opacity-50 me-3" alt="">
+                        <i class="fab fa-cc-visa text-muted mx-1 fs-5"></i>
+                        <i class="fab fa-cc-mastercard text-muted mx-1 fs-5"></i>
+                        <i class="fab fa-cc-amex text-muted mx-1 fs-5"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
+        <div id="liveToast"
+            class="toast align-items-center glass-card border-0 border-start border-4 border-primary shadow-lg"
+            role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex p-2">
+                <div class="toast-body d-flex align-items-center">
+                    <div class="bg-primary rounded-circle p-2 me-2 text-white d-flex align-items-center justify-content-center"
+                        style="width: 28px; height: 28px;">
+                        <i class="fas fa-check smaller"></i>
+                    </div>
+                    <span id="toast-message" class="smaller fw-bold">Success! Task completed.</span>
+                </div>
+                <button type="button" class="btn-close ms-auto me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        // Custom micro-interactions
+        document.querySelectorAll('.hover-primary').forEach(el => {
+            el.addEventListener('mouseenter', () => el.classList.add('ps-2'));
+            el.addEventListener('mouseleave', () => el.classList.remove('ps-2'));
+        });
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>

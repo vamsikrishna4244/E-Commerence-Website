@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EShop Pro Notification</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap');
+
+        body {
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .wrapper {
+            width: 100%;
+            table-layout: fixed;
+            background-color: #f8f9fa;
+            padding-bottom: 40px;
+        }
+
+        .main {
+            background-color: #ffffff;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 600px;
+            border-spacing: 0;
+            color: #1a1a1a;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2a2a72 0%, #009ffd 100%);
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #ffffff;
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .content {
+            padding: 40px 30px;
+            line-height: 1.6;
+        }
+
+        .content h2 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-top: 0;
+            color: #2a2a72;
+        }
+
+        .button-container {
+            text-align: center;
+            padding: 20px 0 40px;
+        }
+
+        .button {
+            background: linear-gradient(135deg, #2a2a72 0%, #009ffd 100%);
+            color: #ffffff !important;
+            text-decoration: none;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-weight: 600;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(0, 159, 253, 0.3);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            font-size: 13px;
+            color: #6c757d;
+        }
+
+        .social-links {
+            margin-bottom: 15px;
+        }
+
+        .social-links a {
+            margin: 0 8px;
+            text-decoration: none;
+        }
+
+        @media screen and (max-width: 600px) {
+            .content {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <table class="main">
+            <tr>
+                <td class="header">
+                    <h1>EShop<span style="font-style: italic; opacity: 0.9;">Pro</span></h1>
+                </td>
+            </tr>
+            <tr>
+                <td class="content">
+                    {% block content %}{% endblock %}
+                </td>
+            </tr>
+            <tr>
+                <td class="footer">
+                    <div class="social-links">
+                        <a href="#" style="color: #6c757d;">Instagram</a> •
+                        <a href="#" style="color: #6c757d;">Twitter</a> •
+                        <a href="#" style="color: #6c757d;">LinkedIn</a>
+                    </div>
+                    <p>&copy; 2026 EShop Pro Intelligence.<br>Crafted with elegance for world-class shopping.</p>
+                    <p style="font-size: 11px; opacity: 0.7;">You received this email because you registered on EShop
+                        Pro.</p>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>
