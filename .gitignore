@@ -1,0 +1,64 @@
+# ========================
+# Environment & Secrets
+# ========================
+.env
+*.env
+!.env.example
+
+# Firebase real credentials (NEVER commit these)
+*firebase-adminsdk*.json
+!firebase-credentials.example.json
+
+# ========================
+# Python
+# ========================
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ========================
+# Virtual Environments
+# ========================
+venv/
+env/
+.venv/
+ENV/
+
+# ========================
+# Flask / App
+# ========================
+instance/
+.flask_session/
+flask_session/
+
+# ========================
+# OS Files
+# ========================
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ========================
+# IDE / Editor
+# ========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ========================
+# Logs
+# ========================
+*.log
+logs/
