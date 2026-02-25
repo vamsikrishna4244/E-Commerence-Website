@@ -210,11 +210,6 @@ Visit: [http://localhost:5000](http://localhost:5000)
 | Frontend | Bootstrap 5, Font Awesome 6 |
 | Security | CSRF protection, CAPTCHA, bcrypt hashing |
 
----
-
-## 📄 License
-
-MIT License — free to use, modify, and distribute.
 
 ---
 
